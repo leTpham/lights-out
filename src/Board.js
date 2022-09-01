@@ -37,16 +37,11 @@ function Board({ nrows = 5, ncols = 5, chanceLightStartsOn = 0.5 }) {
     // make an array of nrows length, then map each row to an array of ncols length
     // filled with true and false based on chanceLightStartsOn
     initialBoard = Array.from({ length: nrows })
-      .map(x => Array.from({ length: ncols })
-        .map(y => Math.random() <= chanceLightStartsOn));
+         .map(x => Array.from({ length: ncols })
+         .map(y => Math.random() <= chanceLightStartsOn));
 
     return initialBoard;
   }
-
-  function getRolls(n) {
-    return Array.from({ length: n }).map(d6);
-  }
-
 
 
   function hasWon() {
@@ -61,6 +56,7 @@ function Board({ nrows = 5, ncols = 5, chanceLightStartsOn = 0.5 }) {
     }
     return true;
 
+    //board.every(row.every(cell => cell === true));
   }
 
   function flipCellsAround(coord) {
@@ -78,27 +74,37 @@ function Board({ nrows = 5, ncols = 5, chanceLightStartsOn = 0.5 }) {
       //Make a (deep) copy of the oldBoard
       const boardCopy = oldBoard.map(r => r.map(c => c));
 
-      // TODO: in the copy, flip this cell and the cells around it
+      //in the copy, flip this cell and the cells around it
       flipCell(y - 1, x, boardCopy);
       flipCell(y + 1, x, boardCopy);
       flipCell(y, x - 1, boardCopy);
       flipCell(y, x + 1, boardCopy);
       flipCell(y, x, boardCopy);
 
-      // TODO: return the copy
+      //return the copy
       return boardCopy;
-
-
     });
   }
 
   // if the game is won, just show a winning msg & render nothing else
 
-  // TODO
+  if (hasWon() === true) {
+    return <p>You Won</p>
+  };
 
   // make table board
 
-  // TODO
+  //initialBoard.map(row => row.map(c => <Cell />))
+  
+  // [[T,F][T,F]] => map(row(T,F) => )
+  
+  return (
+    <table>
+      {board.map(
+        (row, y) => <tr>{row.map(
+          (cell, x) => <Cell flipCellsAroundMe={() => flipCellsAround(`${y}-${x}`)} isLit={cell}/>)}</tr>)}
+    </table>
+  )
 }
 
 export default Board;
